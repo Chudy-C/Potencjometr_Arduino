@@ -42,31 +42,22 @@
             this.lByteValue = new System.Windows.Forms.Label();
             this.lVoltageValue = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.patientBox = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.colonL = new System.Windows.Forms.Label();
-            this.colonR = new System.Windows.Forms.Label();
-            this.milisecondsText = new System.Windows.Forms.Label();
-            this.secondsText = new System.Windows.Forms.Label();
-            this.minutesText = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.resetTimerButton = new System.Windows.Forms.Button();
-            this.stopButton = new System.Windows.Forms.Button();
-            this.startButton = new System.Windows.Forms.Button();
-            this.lmilis = new System.Windows.Forms.Label();
-            this.lSeconds = new System.Windows.Forms.Label();
-            this.lMinutes = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.measurementTimer = new System.Windows.Forms.Timer(this.components);
             this.lPercentage = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.textBoxReceiver = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.measurementTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.progressChart)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // arduinoPort
+            // 
+            this.arduinoPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.port_DataReceived);
             // 
             // comBox
             // 
@@ -98,7 +89,6 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(17, 330);
             this.progressBar.MarqueeAnimationSpeed = 10;
-            this.progressBar.Maximum = 255;
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(465, 30);
             this.progressBar.Step = 1;
@@ -178,31 +168,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "COM Port";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.patientBox);
-            this.groupBox2.Location = new System.Drawing.Point(12, 121);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(334, 102);
-            this.groupBox2.TabIndex = 12;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Patient";
-            // 
-            // patientBox
-            // 
-            this.patientBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.patientBox.FormattingEnabled = true;
-            this.patientBox.Items.AddRange(new object[] {
-            "Grzegorz Brzęczyszczykiewicz",
-            "Maciej Chudziński",
-            "Jan Kowalski",
-            "Jan Jan"});
-            this.patientBox.Location = new System.Drawing.Point(14, 41);
-            this.patientBox.Name = "patientBox";
-            this.patientBox.Size = new System.Drawing.Size(304, 27);
-            this.patientBox.TabIndex = 0;
-            this.patientBox.SelectedIndexChanged += new System.EventHandler(this.patientBox_SelectedIndexChanged);
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lPercentage);
@@ -217,170 +182,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Measurment";
             // 
-            // colonL
-            // 
-            this.colonL.AutoSize = true;
-            this.colonL.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.colonL.Location = new System.Drawing.Point(181, 64);
-            this.colonL.Name = "colonL";
-            this.colonL.Size = new System.Drawing.Size(26, 37);
-            this.colonL.TabIndex = 17;
-            this.colonL.Text = ":";
-            // 
-            // colonR
-            // 
-            this.colonR.AutoSize = true;
-            this.colonR.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.colonR.Location = new System.Drawing.Point(252, 65);
-            this.colonR.Name = "colonR";
-            this.colonR.Size = new System.Drawing.Size(26, 37);
-            this.colonR.TabIndex = 18;
-            this.colonR.Text = ":";
-            // 
-            // milisecondsText
-            // 
-            this.milisecondsText.AutoSize = true;
-            this.milisecondsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.milisecondsText.Location = new System.Drawing.Point(274, 65);
-            this.milisecondsText.Name = "milisecondsText";
-            this.milisecondsText.Size = new System.Drawing.Size(53, 38);
-            this.milisecondsText.TabIndex = 14;
-            this.milisecondsText.Text = "00";
-            // 
-            // secondsText
-            // 
-            this.secondsText.AutoSize = true;
-            this.secondsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.secondsText.Location = new System.Drawing.Point(203, 65);
-            this.secondsText.Name = "secondsText";
-            this.secondsText.Size = new System.Drawing.Size(53, 38);
-            this.secondsText.TabIndex = 15;
-            this.secondsText.Text = "00";
-            // 
-            // minutesText
-            // 
-            this.minutesText.AutoSize = true;
-            this.minutesText.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.minutesText.Location = new System.Drawing.Point(135, 64);
-            this.minutesText.Name = "minutesText";
-            this.minutesText.Size = new System.Drawing.Size(53, 38);
-            this.minutesText.TabIndex = 16;
-            this.minutesText.Text = "00";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.resetTimerButton);
-            this.groupBox4.Controls.Add(this.stopButton);
-            this.groupBox4.Controls.Add(this.startButton);
-            this.groupBox4.Controls.Add(this.lmilis);
-            this.groupBox4.Controls.Add(this.lSeconds);
-            this.groupBox4.Controls.Add(this.lMinutes);
-            this.groupBox4.Controls.Add(this.secondsText);
-            this.groupBox4.Controls.Add(this.colonL);
-            this.groupBox4.Controls.Add(this.minutesText);
-            this.groupBox4.Controls.Add(this.colonR);
-            this.groupBox4.Controls.Add(this.milisecondsText);
-            this.groupBox4.Location = new System.Drawing.Point(13, 245);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(333, 138);
-            this.groupBox4.TabIndex = 19;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "START / STOP";
-            // 
-            // resetTimerButton
-            // 
-            this.resetTimerButton.BackColor = System.Drawing.SystemColors.Control;
-            this.resetTimerButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.resetTimerButton.FlatAppearance.BorderSize = 20;
-            this.resetTimerButton.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.resetTimerButton.Location = new System.Drawing.Point(13, 102);
-            this.resetTimerButton.Margin = new System.Windows.Forms.Padding(5);
-            this.resetTimerButton.Name = "resetTimerButton";
-            this.resetTimerButton.Size = new System.Drawing.Size(103, 27);
-            this.resetTimerButton.TabIndex = 25;
-            this.resetTimerButton.Text = "Reset";
-            this.resetTimerButton.UseVisualStyleBackColor = false;
-            this.resetTimerButton.Click += new System.EventHandler(this.resetTimerButton_Click);
-            // 
-            // stopButton
-            // 
-            this.stopButton.BackColor = System.Drawing.SystemColors.Control;
-            this.stopButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.stopButton.FlatAppearance.BorderSize = 20;
-            this.stopButton.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.stopButton.Location = new System.Drawing.Point(13, 65);
-            this.stopButton.Margin = new System.Windows.Forms.Padding(5);
-            this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(103, 27);
-            this.stopButton.TabIndex = 24;
-            this.stopButton.Text = "Stop";
-            this.stopButton.UseVisualStyleBackColor = false;
-            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
-            // 
-            // startButton
-            // 
-            this.startButton.BackColor = System.Drawing.SystemColors.Control;
-            this.startButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.startButton.FlatAppearance.BorderSize = 20;
-            this.startButton.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.startButton.Location = new System.Drawing.Point(12, 28);
-            this.startButton.Margin = new System.Windows.Forms.Padding(5);
-            this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(103, 27);
-            this.startButton.TabIndex = 23;
-            this.startButton.Text = "Start";
-            this.startButton.UseVisualStyleBackColor = false;
-            this.startButton.Click += new System.EventHandler(this.startButton_Click);
-            // 
-            // lmilis
-            // 
-            this.lmilis.AutoSize = true;
-            this.lmilis.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lmilis.Location = new System.Drawing.Point(277, 48);
-            this.lmilis.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lmilis.Name = "lmilis";
-            this.lmilis.Size = new System.Drawing.Size(40, 19);
-            this.lmilis.TabIndex = 22;
-            this.lmilis.Text = "milis";
-            // 
-            // lSeconds
-            // 
-            this.lSeconds.AutoSize = true;
-            this.lSeconds.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lSeconds.Location = new System.Drawing.Point(197, 48);
-            this.lSeconds.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lSeconds.Name = "lSeconds";
-            this.lSeconds.Size = new System.Drawing.Size(62, 19);
-            this.lSeconds.TabIndex = 21;
-            this.lSeconds.Text = "seconds";
-            // 
-            // lMinutes
-            // 
-            this.lMinutes.AutoSize = true;
-            this.lMinutes.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lMinutes.Location = new System.Drawing.Point(127, 48);
-            this.lMinutes.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lMinutes.Name = "lMinutes";
-            this.lMinutes.Size = new System.Drawing.Size(61, 19);
-            this.lMinutes.TabIndex = 20;
-            this.lMinutes.Text = "minutes";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::PotencjometrArduino.Properties.Resources.wnt_logo_92x92;
-            this.pictureBox1.InitialImage = global::PotencjometrArduino.Properties.Resources.wnt_logo_92x92;
-            this.pictureBox1.Location = new System.Drawing.Point(254, 23);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(92, 92);
-            this.pictureBox1.TabIndex = 20;
-            this.pictureBox1.TabStop = false;
-            // 
-            // measurementTimer
-            // 
-            this.measurementTimer.Enabled = true;
-            this.measurementTimer.Interval = 10;
-            this.measurementTimer.Tick += new System.EventHandler(this.measurementTimer_Tick);
-            // 
             // lPercentage
             // 
             this.lPercentage.AutoSize = true;
@@ -390,14 +191,47 @@
             this.lPercentage.TabIndex = 11;
             this.lPercentage.Text = "00%";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PotencjometrArduino.Properties.Resources.wnt_logo_92x92;
+            this.pictureBox1.InitialImage = global::PotencjometrArduino.Properties.Resources.wnt_logo_92x92;
+            this.pictureBox1.Location = new System.Drawing.Point(258, 23);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(92, 92);
+            this.pictureBox1.TabIndex = 20;
+            this.pictureBox1.TabStop = false;
+            // 
+            // textBoxReceiver
+            // 
+            this.textBoxReceiver.Location = new System.Drawing.Point(6, 26);
+            this.textBoxReceiver.Multiline = true;
+            this.textBoxReceiver.Name = "textBoxReceiver";
+            this.textBoxReceiver.Size = new System.Drawing.Size(325, 93);
+            this.textBoxReceiver.TabIndex = 21;
+            this.textBoxReceiver.TextChanged += new System.EventHandler(this.textBoxReceiver_TextChanged);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBoxReceiver);
+            this.groupBox2.Location = new System.Drawing.Point(13, 121);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(337, 148);
+            this.groupBox2.TabIndex = 21;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Data Received";
+            // 
+            // measurementTimer
+            // 
+            this.measurementTimer.Interval = 20;
+            this.measurementTimer.Tick += new System.EventHandler(this.measurementTimer_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(873, 399);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -407,16 +241,16 @@
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.Text = "Arduino Potencjometr";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.progressChart)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -433,24 +267,12 @@
         private System.Windows.Forms.Label lByteValue;
         private System.Windows.Forms.Label lVoltageValue;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label colonL;
-        private System.Windows.Forms.Label colonR;
-        private System.Windows.Forms.Label milisecondsText;
-        private System.Windows.Forms.Label secondsText;
-        private System.Windows.Forms.Label minutesText;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label lmilis;
-        private System.Windows.Forms.Label lSeconds;
-        private System.Windows.Forms.Label lMinutes;
-        private System.Windows.Forms.Button resetTimerButton;
-        private System.Windows.Forms.Button stopButton;
-        private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Timer measurementTimer;
-        private System.Windows.Forms.ComboBox patientBox;
         private System.Windows.Forms.Label lPercentage;
+        private System.Windows.Forms.TextBox textBoxReceiver;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Timer measurementTimer;
     }
 }
 
