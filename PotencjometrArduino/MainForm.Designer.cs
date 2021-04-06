@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.arduinoPort = new System.IO.Ports.SerialPort(this.components);
             this.comBox = new System.Windows.Forms.ComboBox();
             this.connectButton = new System.Windows.Forms.Button();
@@ -48,11 +48,14 @@
             this.textBoxReceiver = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.measurementTimer = new System.Windows.Forms.Timer(this.components);
+            this.labelTimer = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.progressChart)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // arduinoPort
@@ -120,22 +123,22 @@
             // 
             // progressChart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.progressChart.ChartAreas.Add(chartArea1);
+            chartArea2.Name = "ChartArea1";
+            this.progressChart.ChartAreas.Add(chartArea2);
             this.progressChart.Location = new System.Drawing.Point(17, 26);
             this.progressChart.Name = "progressChart";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            series1.Name = "Potentiometer";
-            this.progressChart.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            series2.Name = "Potentiometer";
+            this.progressChart.Series.Add(series2);
             this.progressChart.Size = new System.Drawing.Size(465, 229);
             this.progressChart.TabIndex = 8;
             this.progressChart.Text = "VoltageChart";
-            title1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            title1.Name = "Title1";
-            title1.Text = "Voltage";
-            this.progressChart.Titles.Add(title1);
+            title2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            title2.Name = "Title1";
+            title2.Text = "Voltage";
+            this.progressChart.Titles.Add(title2);
             // 
             // lByteValue
             // 
@@ -203,10 +206,10 @@
             // 
             // textBoxReceiver
             // 
-            this.textBoxReceiver.Location = new System.Drawing.Point(6, 26);
+            this.textBoxReceiver.Location = new System.Drawing.Point(12, 26);
             this.textBoxReceiver.Multiline = true;
             this.textBoxReceiver.Name = "textBoxReceiver";
-            this.textBoxReceiver.Size = new System.Drawing.Size(325, 93);
+            this.textBoxReceiver.Size = new System.Drawing.Size(310, 106);
             this.textBoxReceiver.TabIndex = 21;
             this.textBoxReceiver.TextChanged += new System.EventHandler(this.textBoxReceiver_TextChanged);
             // 
@@ -225,10 +228,31 @@
             this.measurementTimer.Interval = 20;
             this.measurementTimer.Tick += new System.EventHandler(this.measurementTimer_Tick);
             // 
+            // labelTimer
+            // 
+            this.labelTimer.AutoSize = true;
+            this.labelTimer.Font = new System.Drawing.Font("Calibri", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelTimer.Location = new System.Drawing.Point(41, 23);
+            this.labelTimer.Name = "labelTimer";
+            this.labelTimer.Size = new System.Drawing.Size(258, 78);
+            this.labelTimer.TabIndex = 22;
+            this.labelTimer.Text = "00:00.00";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.labelTimer);
+            this.groupBox4.Location = new System.Drawing.Point(12, 275);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(338, 112);
+            this.groupBox4.TabIndex = 22;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Time elapsed";
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(873, 399);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox3);
@@ -251,6 +275,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -273,6 +299,8 @@
         private System.Windows.Forms.TextBox textBoxReceiver;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Timer measurementTimer;
+        private System.Windows.Forms.Label labelTimer;
+        private System.Windows.Forms.GroupBox groupBox4;
     }
 }
 

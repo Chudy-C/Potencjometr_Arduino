@@ -155,38 +155,56 @@ namespace PotencjometrArduino
 
         private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            /*todo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+             * !!!!! TU NASTĄPIŁA ZMIANA KODU !!!!!
+             * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             */
             string dataIn = arduinoPort.ReadTo("\n");
-            Data_Parsing(dataIn);
-            this.BeginInvoke(new EventHandler(Show_data));
-
-            string path = String.Format(@"D:\5_STUDIA\inzynierka\C#_program\TxtFiles\{0}.txt", fileDate);
-            if (!File.Exists(path))
+            if(dataIn == "KONIEC")
             {
-                File.Create(path).Dispose();
-
-                using (TextWriter tw = new StreamWriter(path))
-                {
-                    tw.WriteLine("Numer próbki;Byte;Voltage;Percentage");
-                    tw.WriteLine(StringToCSV(dataIn));
-                }
-
+                stopWatch.Stop();
+                measurementTimer.Stop();
             }
-            else if (File.Exists(path))
+            else
             {
-                using (TextWriter tw = File.AppendText(path))
+                if (measurementTimer.Enabled && dataIn.StartsWith("@"))
                 {
-                    tw.WriteLine(StringToCSV(dataIn));
+                    Data_Parsing(dataIn);
+                    this.BeginInvoke(new EventHandler(Show_data));
+
+                    string path = String.Format(@"D:\5_STUDIA\inzynierka\C#_program\TxtFiles\{0}.txt", fileDate);
+                    if (!File.Exists(path))
+                    {
+                        File.Create(path).Dispose();
+
+                        using (TextWriter tw = new StreamWriter(path))
+                        {
+                            tw.WriteLine("Numer próbki;Byte;Voltage;Percentage");
+                            tw.WriteLine(StringToCSV(dataIn));
+                        }
+
+                    }
+                    else if (File.Exists(path))
+                    {
+                        using (TextWriter tw = File.AppendText(path))
+                        {
+                            tw.WriteLine(StringToCSV(dataIn));
+                        }
+                    }
                 }
+
             }
         }
 
         private void Show_data(object sender, EventArgs e)
         {
             /* todo : Timer label 
-                - Dodać label do wyświetlania timeStamp
                 - bool sprawdzający czy Timer zaczął działać
                     = true jeżeli przyjął dane typu: @201N1024B0.48V100P
                     else = false;
+             */
+            /* x : Timer label 
+                - Dodać label do wyświetlania timeStamp
                 - jeżeli dataReciver otrzyma "KONIEC" -> wyłącz timer oraz StopWatch
              */
 
