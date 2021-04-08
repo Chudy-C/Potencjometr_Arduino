@@ -17,16 +17,15 @@ namespace PotencjometrArduino
     public partial class MainForm : Form
     {
         bool isConnected = false;
-        bool updateData = false;
         String[] ports;
+
 
         string fileDate;
         uint probka;
         string percentage, volts, byteValue;
         double voltageValue;
         int percentageInt;
-
-        string timeStamp, milis, seconds, minutes;
+        public string timeStamp, milis, seconds, minutes;
         TimeSpan ts;
         Stopwatch stopWatch;
 
@@ -35,10 +34,10 @@ namespace PotencjometrArduino
             InitializeComponent();
             getAvailablePorts();
 
-            foreach(string port in ports)
+            foreach (string port in ports)
             {
                 comBox.Items.Add(port);
-                if(ports[0] != null)
+                if (ports[0] != null)
                 {
                     comBox.SelectedItem = ports[0];
                 }
@@ -48,12 +47,14 @@ namespace PotencjometrArduino
             string year = DateTime.Now.Year.ToString("00");
             string hour = DateTime.Now.Hour.ToString("00");
             string minute = DateTime.Now.Minute.ToString("00");
-            fileDate = day + "-" + month + "-" + year + "_" +hour+minute;
+            fileDate = day + "-" + month + "-" + year + "_" + hour + minute;
             probka = 0;
 
             stopWatch = new Stopwatch();
-
+            measurementTimer.Start();
+            measurementTimer.Tick += measurementTimer_Tick;
         }
+
 
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -100,10 +101,9 @@ namespace PotencjometrArduino
             connectionText.Visible = true;
 
             connectButton.Text = "Disconnect";
-            updateData = true;
             disableControls();
 
-           //arduinoTimer.Interval = 100;
+            //arduinoTimer.Interval = 100;
             //arduinoTimer.Start();
         }
 
@@ -144,7 +144,7 @@ namespace PotencjometrArduino
         {
             probka++;
 
-            input = input.Remove(0,1);
+            input = input.Remove(0, 1);
             input = input.Replace('N', ';');
             input = input.Replace('B', ';');
             input = input.Replace('V', ';');
@@ -160,10 +160,21 @@ namespace PotencjometrArduino
              * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
              */
             string dataIn = arduinoPort.ReadTo("\n");
-            if(dataIn == "KONIEC")
+            if (!stopWatch.IsRunning) stopWatch.Start();
+            if (dataIn == "KONIEC\r")
             {
                 stopWatch.Stop();
                 measurementTimer.Stop();
+
+                string message = "Czy chcesz dokonać ponownego pomiaru?";
+                DialogResult result = MessageBox.Show(message, caption: "Zamykam", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    Application.Restart();
+                    Environment.Exit(0);
+                }
+                else Environment.Exit(0);
             }
             else
             {
@@ -179,8 +190,9 @@ namespace PotencjometrArduino
 
                         using (TextWriter tw = new StreamWriter(path))
                         {
-                            tw.WriteLine("Numer próbki;Byte;Voltage;Percentage");
+                            tw.WriteLine("N;Byte;Voltage;Percentage;TimeStamp");
                             tw.WriteLine(StringToCSV(dataIn));
+
                         }
 
                     }
@@ -198,20 +210,21 @@ namespace PotencjometrArduino
 
         private void Show_data(object sender, EventArgs e)
         {
-            /* todo : Timer label 
-                - bool sprawdzający czy Timer zaczął działać
-                    = true jeżeli przyjął dane typu: @201N1024B0.48V100P
-                    else = false;
-             */
+
             /* x : Timer label 
                 - Dodać label do wyświetlania timeStamp
                 - jeżeli dataReciver otrzyma "KONIEC" -> wyłącz timer oraz StopWatch
+                - bool sprawdzający czy Timer zaczął działać
+                    = true jeżeli przyjął dane typu: @201N1024B0.48V100P
+                    else = false;
              */
 
             lByteValue.Text = string.Format("Potentiometer Value [Byte] : {0}", byteValue);
             lVoltageValue.Text = string.Format("Potentiometer Value[V] :  {0}", volts);
             lPercentage.Text = percentage;
-            progressBar.Value = percentageInt; 
+            progressBar.Value = percentageInt;
+
+
 
             progressChart.Series[0].Points.Add(voltageValue);
             progressChart.ChartAreas[0].AxisY.Maximum = 2;
@@ -253,14 +266,12 @@ namespace PotencjometrArduino
 
                     voltageValue = double.Parse(str_volts, System.Globalization.CultureInfo.InvariantCulture);
 
-                    updateData = true;
                 }
                 catch (Exception)
                 {
 
                 }
             }
-            else updateData = false;
         }
 
         private void textBoxReceiver_TextChanged(object sender, EventArgs e)
@@ -288,7 +299,15 @@ namespace PotencjometrArduino
             }
             else minutes = ts.Minutes.ToString();
 
-            timeStamp = minutes+":"+seconds+"."+milis;
+            timeStamp = minutes + ":" + seconds + "." + milis;
+
+            Invoke(new SetLogDelegate(this.SetLogText), timeStamp);
+        }
+
+        private delegate void SetLogDelegate(string time);
+        private void SetLogText(string strText)
+        {
+            labelTimer.Text = strText;
         }
 
     }
